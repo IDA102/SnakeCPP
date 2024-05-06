@@ -1,4 +1,5 @@
-#include "Header.h"
+#include "../inc/Header.h"
+#include "../inc/Rand.h"
 
 string bufferDraw;
 bool gameOver;
@@ -24,16 +25,18 @@ eAction act;
 void Setup()
 {
 	system("cls");
-	countTail=0;
-	gameOver=false;
-	score=0;
-	Head.x=width/2;
-	Head.y=height/2;
-	act=STOP;
+	//std::cout << "SELECT OR ENTER MAP SIZE" << std::endl << "1 - SELECT" << std::endl << "2 - ENTER";
+	//system("pause");
+	//countTail=0;
+	//gameOver=false;
+	//score=0;
+	//Head.x=width/2;
+	//Head.y=height/2;
+	//act=STOP;
 
-	srand(time(0)); //избавляемся от псевдорандомных чисел
-	targetX=rand() % (width-1);
-	targetY=rand() % (height-1);
+	//srand(time(0)); //избавляемся от псевдорандомных чисел
+	//targetX=rand() % (width-1);
+	//targetY=rand() % (height-1);
 }
 
 void Draw()
@@ -199,3 +202,102 @@ void Logic()
 
 	}
 }
+
+
+void testMENU()
+{
+	/*
+	std::cout << char(triangleUP)      << std::endl;
+	std::cout << char(triangleRIGHT)   << std::endl;
+	std::cout << char(triangleDOWN)    << std::endl;
+	std::cout << char(triangleLEFT)    << std::endl;
+	std::cout << char(circle)          << std::endl;
+	std::cout << char(lineVERTICAL)    << std::endl;
+	std::cout << char(lineHORIZONTAL)  << std::endl;
+	std::cout << char(angleBottomRight)<< std::endl;
+	std::cout << char(angleTopRight)   << std::endl;
+	std::cout << char(angleBottomLeft) << std::endl;
+	std::cout << char(angleTopLeft)    << std::endl;
+	*/
+	/*
+	unsigned char MAP[SMALL_height][SMALL_width];
+	MAP[0][0]                          = angleTopLeft;
+	MAP[0][SMALL_width-1]              = angleTopRight;
+	MAP[SMALL_height-1][0]             = angleBottomLeft;
+	MAP[SMALL_height-1][SMALL_width-1] = angleBottomRight;
+	//TOP LINE
+	for (size_t i = 1; i < SMALL_width-1; i++)
+	{ MAP[0][i] = lineHORIZONTAL; }
+	for (size_t i = 0; i < SMALL_width; i++){	std::cout << MAP[0][i];	}
+	std::cout << std::endl;
+
+	//MID LINE
+	for (size_t i = 1; i < SMALL_height-1; i++)
+	{
+		MAP[i][0] = lineVERTICAL;
+	}
+	for (size_t i = 1; i < SMALL_height-1; i++)
+	{
+		MAP[i][SMALL_width-1] = lineVERTICAL;
+	}
+
+	for (size_t i = 1; i < SMALL_height-1; i++)
+	{
+		for (size_t j = 0; j < SMALL_width; j++)
+		{
+			std::cout << MAP[i][j];
+		}
+		std::cout << endl;
+	}
+	 
+	// DOWN LINE
+	for (size_t i = 1; i < SMALL_width - 1; i++)
+	{
+		MAP[SMALL_height-1][i] = lineHORIZONTAL;
+	}
+	for (size_t i = 0; i < SMALL_width; i++) { std::cout << MAP[SMALL_height-1][i]; }
+	std::cout << std::endl;
+	*/
+	// MENU 1
+	std::cout << "-----MENU-----" << std::endl;
+	std::cout << "SELECT OR ENTER MAP SIZE" << std::endl;
+	std::cout << " SELECT" << std::endl;
+  std::cout << " ENTER"  << std::endl;
+	
+	//Анимация выбора меню
+	COORD position1 = { 0,2 };
+	COORD position2 = { 0,3 };
+	COORD* pPosition = &position1;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	//DWORD  dwSize;
+	//BOOL   bVisible;
+	CONSOLE_CURSOR_INFO gg{ DWORD(100), false };
+	SetConsoleCursorInfo(hConsole, &gg);
+	while (1)
+	{
+		SetConsoleCursorPosition(hConsole, *pPosition);
+		std::cout << char(menuG_1);
+		this_thread::sleep_for(chrono::milliseconds(250));
+		SetConsoleCursorPosition(hConsole, *pPosition);
+		std::cout << char(menuG_2);
+		this_thread::sleep_for(chrono::milliseconds(250));
+		if (_kbhit()) //если нажата клавиша
+		{
+			switch (_getch())
+			{
+			case 'w':
+				SetConsoleCursorPosition(hConsole, *pPosition);
+				std::cout << ' ';
+				pPosition = &position1;
+				break;
+			case 's':
+				SetConsoleCursorPosition(hConsole, *pPosition);
+				std::cout << ' ';
+				pPosition = &position2;
+				break;
+			}
+		}
+	}
+	
+
+ }
