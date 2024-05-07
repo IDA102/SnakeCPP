@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(SnakeProj)
 
-add_executable(Snake main.cpp Functions.cpp Header.h)
+add_executable(Snake main.cpp Functions.cpp "../inc/Header.h")
 
 set_target_properties(
         Snake PROPERTIES

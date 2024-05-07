@@ -1,22 +1,34 @@
 #include "../inc/Header.h"
 #include "../inc/Score.h"
+#include "../inc/Map.h"
 
 //size_t
 
 int main()
 {
-	Score score;
+	uint32_t ret = 0;
+	Score    score;
 
-	testMENU();
+	ret = menu();
+	if     ( ret == 1 ){ system("cls"); presetMAP();     }
+	else if( ret == 2 ){ system("cls"); /*inputSIZE();*/ }
+	else               {}
+	
+	system("cls");
+	presetSPEED();
+	
+	system("cls");
+	Map map;
 	//Setup();
 	//while(!gameOver)
 	//{
 	//	Draw();
-	//	Input();
+  //  input();
 	//	Logic();
 	//	this_thread::sleep_for(chrono::milliseconds(delay));
 	//}
 
+	// Запись рекорда в файл
 	if( score.compare() )
 		score.write();
 	
