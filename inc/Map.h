@@ -7,7 +7,7 @@ class Map
   private:
     uint32_t height = 20;
     uint32_t width  = 40;
-    unsigned char map[20][40];
+    std::vector<std::vector<unsigned char>> map;
     void frame();
   public:
 	  //Map(preMAP);
@@ -16,7 +16,12 @@ class Map
 };
 
 //Map::Map  ( preMAP pm ){}
-Map::Map (){ this->frame(); };
+Map::Map ()
+{
+// Резервируем место под карту. // Ленивую инициализацию для map-хз как
+  map = std::move(std::vector<std::vector<unsigned char>>{height, std::vector<unsigned char>(width,' ')});
+  this->frame(); 
+};
 Map::~Map(){}
 void Map::frame()
 {

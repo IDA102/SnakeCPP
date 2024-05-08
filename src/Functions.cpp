@@ -15,8 +15,8 @@ struct Snake
 };
 Snake Head;
 
-Snake snakeTail[100];
-size_t countTail=0;
+Snake   snakeTail[100];
+size_t  countTail=0;
 eAction act;
 
 //functions
@@ -55,7 +55,6 @@ void Draw()
 	for(int i=0;i<height;i++)
 	{
 		bufferDraw+="\n";
-
 		for(int j=0;j<width;j++)
 		{
 			if(j==0 || j==(width-1))
@@ -77,11 +76,9 @@ void Draw()
 						break;
 					}
 				}
-
 				if(printTail)
 					bufferDraw+=" ";
-			}
-				
+			}	
 		}
 	}
 
@@ -113,8 +110,6 @@ void Logic()
 		Head.y-=1;
 	else if(act == eAction::DOWN)
 		Head.y+=1;
-
-
 
 	//through
 	if(Head.x == -1 || Head.x == width - 1 || Head.y == -1 || Head.y == height)
@@ -170,7 +165,6 @@ void Logic()
 
 	//add tail
 		++countTail;
-
 	}
 }
 
