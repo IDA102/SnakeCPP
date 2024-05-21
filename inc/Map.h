@@ -1,25 +1,30 @@
+#pragma once
 //#include "Figure.h"
+#include "Apple.h"
 #include <Windows.h>
 #include <iostream>
 
-class Map
+class Map : public RandCoord
 {
   private:
-    uint32_t height = 20;
-    uint32_t width  = 40;
-    std::vector<std::vector<unsigned char>> map;
+    Apple apple;
+    uint32_t height = 20;                        // Высота
+    uint32_t width  = 40;                        // Ширина
+    std::vector<std::vector<unsigned char>> map; // Карта
     void frame();
   public:
-	  //Map(preMAP);
+    //Map(preMAP);
     Map();
-	  ~Map();
+    ~Map();
+    void drawApple();
 };
 
 //Map::Map  ( preMAP pm ){}
-Map::Map ()
+Map::Map () : RandCoord(height, width), apple(height, width)
 {
 // Резервируем место под карту. // Ленивую инициализацию для map-хз как
-  map = std::move(std::vector<std::vector<unsigned char>>{height, std::vector<unsigned char>(width,' ')});
+  map   = std::move(std::vector<std::vector<unsigned char>>{height, std::vector<unsigned char>(width,' ')});
+  apple = std::move(Apple(height, width));
   this->frame(); 
 };
 Map::~Map(){}
@@ -44,3 +49,20 @@ void Map::frame()
     std::cout << std::endl;
   }
 }
+
+void Map::drawApple()
+{
+  uint32_t y;
+  uint32_t x;
+  std::tuple<uint32_t, uint32_t> coord = apple.get(); // Получаем координаты тыблока.
+  std::tie(y,x) = coord;
+  // Записываем координаты тыблока в фрейм карты.
+  // Отрисовываем.
+  COORD  position{x,y};
+  HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+  CONSOLE_CURSOR_INFO console{ DWORD(100), false }; // DWORD  dwSize , BOOL   bVisible
+  SetConsoleCursorInfo(hConsole, &console);         // Выкручиваем прозрачность курсора на 100
+  SetConsoleCursorPosition(hConsole, position);
+  std::cout << char('X');
+
+};

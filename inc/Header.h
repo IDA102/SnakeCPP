@@ -1,8 +1,6 @@
 #pragma once
-
 #include "../inc/Define.h"
 #include "../inc/Figure.h"
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -16,6 +14,7 @@
 //#include <consoleapi2.h>
 #include <Windows.h>
 //#include "./Score.h"
+
 
 //using namespace std;
 

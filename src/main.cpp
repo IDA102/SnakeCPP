@@ -1,8 +1,10 @@
+#pragma once
+#include <random>
 #include "../inc/Header.h"
 #include "../inc/Score.h"
+#include "../inc/RandCoord.h"
 #include "../inc/Map.h"
 
-//size_t
 
 int main()
 {
@@ -19,6 +21,7 @@ int main()
 	
 	system("cls");
 	Map map;
+	map.drawApple();
 	//Setup();
 	//while(!gameOver)
 	//{

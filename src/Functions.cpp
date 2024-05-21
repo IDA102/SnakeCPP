@@ -1,5 +1,4 @@
 #include "../inc/Header.h"
-#include "../inc/Rand.h"
 
 std::string bufferDraw;
 bool gameOver;
@@ -19,7 +18,7 @@ Snake   snakeTail[100];
 size_t  countTail=0;
 eAction act;
 
-//functions
+// Functions
 void Setup()
 {
 	system("cls");
@@ -310,8 +309,8 @@ uint32_t menu()
   std::cout << " ENTER"  << std::endl;
 	
 	//Анимация выбора меню
-	COORD position1 = { 0,2 };     // Координаты строки "SELECT"
-	COORD position2 = { 0,3 };     // Координаты строки "ENTER"
+	COORD position1 = { 0,2 };                        // Координаты строки "SELECT"
+	COORD position2 = { 0,3 };                        // Координаты строки "ENTER"
 	COORD* pPosition = &position1; 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO console{ DWORD(100), false }; // DWORD  dwSize , BOOL   bVisible
