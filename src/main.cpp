@@ -5,7 +5,6 @@
 #include "../inc/RandCoord.h"
 #include "../inc/Map.h"
 
-
 int main()
 {
 	uint32_t ret = 0;
@@ -21,7 +20,12 @@ int main()
 	
 	system("cls");
 	Map map;
-	map.drawApple();
+	while (1)
+	{
+		map.drawApple();
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+	
 	//Setup();
 	//while(!gameOver)
 	//{

@@ -17,6 +17,7 @@ class Map : public RandCoord
     Map();
     ~Map();
     void drawApple();
+    void drawSnake();
 };
 
 //Map::Map  ( preMAP pm ){}
@@ -54,15 +55,33 @@ void Map::drawApple()
 {
   uint32_t y;
   uint32_t x;
-  std::tuple<uint32_t, uint32_t> coord = apple.get(); // Получаем координаты тыблока.
-  std::tie(y,x) = coord;
-  // Записываем координаты тыблока в фрейм карты.
-  // Отрисовываем.
-  COORD  position{x,y};
+  std::tuple<uint32_t, uint32_t> coord;
+  // Параметры курсора
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
   CONSOLE_CURSOR_INFO console{ DWORD(100), false }; // DWORD  dwSize , BOOL   bVisible
   SetConsoleCursorInfo(hConsole, &console);         // Выкручиваем прозрачность курсора на 100
+  
+  // Стираем предыдущее тыблоко
+  {
+    coord = apple.getApple(); // Получаем координаты текущего тыблока.
+    std::tie(y, x) = coord;
+    COORD  position{static_cast<short>(y),static_cast<short>(x)};
+    SetConsoleCursorPosition(hConsole, position);
+    std::cout << char(' ');
+  }
+
+  // Новые координаты тыблока
+  coord = apple.get(); // Получаем координаты нового тыблока.
+  std::tie(y,x) = coord;
+  // Записываем координаты тыблока в фрейм карты.
+  
+  // Отрисовываем.
+  COORD  position{ static_cast<short>(y),static_cast<short>(x) };
   SetConsoleCursorPosition(hConsole, position);
-  std::cout << char('X');
+  std::cout << char(circle);
+};
+
+void Map::drawSnake()
+{
 
 };

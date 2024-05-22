@@ -15,7 +15,7 @@ Element::~Element(){}
 class Snake : Element
 {
   private:
-  std::vector<unsigned char> snake;
+    std::vector<unsigned char> snake;
   public:
 	  Snake();
 	  ~Snake();
