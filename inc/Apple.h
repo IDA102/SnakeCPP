@@ -3,28 +3,28 @@
 class Apple : public RandCoord
 {
   private:
-    uint32_t x; // Координата
-    uint32_t y; // Координата 
+    uint32_t x,y; // Координаты
   public:
 	  Apple(uint32_t, uint32_t);
 	  ~Apple();
-    std::tuple<uint32_t, uint32_t> get();      // Return кортеж нового яблока
-    std::tuple<uint32_t, uint32_t> getApple(); // Return кортеж текущего яблока
+    std::pair<uint32_t, uint32_t> get();      // Return кортеж нового яблока
+    std::pair<uint32_t, uint32_t> getApple(); // Return кортеж текущего яблока
 };
-Apple::Apple(uint32_t height, uint32_t width) : RandCoord(height, width) {};
+
+Apple::Apple(uint32_t width, uint32_t height) : RandCoord(width, height) {};
 Apple::~Apple(){};
-std::tuple<uint32_t, uint32_t> Apple::get()
+
+std::pair<uint32_t, uint32_t> Apple::get()
 {
   //x = Rand::get();
   //y = Rand::get();
   //return RandCoord::get();
-  std::tie(y, x) = RandCoord::get();
-  return std::tuple<uint32_t, uint32_t>(y, x);
+  return std::pair<uint32_t, uint32_t>{RandCoord::get()};
 };
 
-std::tuple<uint32_t, uint32_t> Apple::getApple()
+std::pair<uint32_t, uint32_t> Apple::getApple()
 {
-  return std::tuple<uint32_t, uint32_t>(y,x);
+  return std::pair<uint32_t, uint32_t>{x,y};
 }
 
 // В конструкторе создаётся и отображается.

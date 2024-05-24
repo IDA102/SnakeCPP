@@ -12,7 +12,7 @@ public:
 	//std::random_device yyy;
 	RandCoord(size_t, size_t);
 	~RandCoord();
-	std::tuple<size_t, size_t> get();
+	std::pair<uint32_t, uint32_t> get();
 };
 
 RandCoord::RandCoord(size_t height, size_t width)
@@ -28,11 +28,11 @@ RandCoord::RandCoord(size_t height, size_t width)
 };
 RandCoord::~RandCoord() {};
 
-std::tuple<size_t, size_t> RandCoord::get()
+std::pair<uint32_t, uint32_t> RandCoord::get()
 {
 	//size_t x = distribution_width(generator_x);
 	//size_t y = distribution_height(generator_y);
 	//std::cout << x << ' ' << y << std::endl;
 	//return std::tuple<size_t, size_t>(x,y);
-	return std::tuple<size_t, size_t>(distribution_width(generator_x), distribution_height(generator_y));
+	return std::pair<uint32_t, uint32_t>(distribution_height(generator_y), distribution_width(generator_x));
 }

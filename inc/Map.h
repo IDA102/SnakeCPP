@@ -1,6 +1,7 @@
 #pragma once
 //#include "Figure.h"
 #include "Apple.h"
+#include "Snake.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -8,8 +9,9 @@ class Map : public RandCoord
 {
   private:
     Apple apple;
+    Snake snake;
     uint32_t height = 20;                        // Высота
-    uint32_t width  = 40;                        // Ширина
+    uint32_t width  = 80;                        // Ширина
     std::vector<std::vector<unsigned char>> map; // Карта
     void frame();
   public:
@@ -21,11 +23,11 @@ class Map : public RandCoord
 };
 
 //Map::Map  ( preMAP pm ){}
-Map::Map () : RandCoord(height, width), apple(height, width)
+Map::Map () : RandCoord(width, height), apple(width, height)
 {
 // Резервируем место под карту. // Ленивую инициализацию для map-хз как
   map   = std::move(std::vector<std::vector<unsigned char>>{height, std::vector<unsigned char>(width,' ')});
-  apple = std::move(Apple(height, width));
+  apple = std::move(Apple(width, height));
   this->frame(); 
 };
 Map::~Map(){}
@@ -53,9 +55,8 @@ void Map::frame()
 
 void Map::drawApple()
 {
-  uint32_t y;
-  uint32_t x;
-  std::tuple<uint32_t, uint32_t> coord;
+  uint32_t x,y;
+  std::pair<uint32_t, uint32_t> coord;
   // Параметры курсора
   HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
   CONSOLE_CURSOR_INFO console{ DWORD(100), false }; // DWORD  dwSize , BOOL   bVisible
@@ -64,15 +65,17 @@ void Map::drawApple()
   // Стираем предыдущее тыблоко
   {
     coord = apple.getApple(); // Получаем координаты текущего тыблока.
-    std::tie(y, x) = coord;
-    COORD  position{static_cast<short>(y),static_cast<short>(x)};
+    x = coord.first;
+    y = coord.second;
+    COORD  position{static_cast<short>(x),static_cast<short>(y)};
     SetConsoleCursorPosition(hConsole, position);
     std::cout << char(' ');
   }
 
   // Новые координаты тыблока
   coord = apple.get(); // Получаем координаты нового тыблока.
-  std::tie(y,x) = coord;
+  x = coord.first;
+  y = coord.second;
   // Записываем координаты тыблока в фрейм карты.
   
   // Отрисовываем.
@@ -83,5 +86,40 @@ void Map::drawApple()
 
 void Map::drawSnake()
 {
+  uint32_t y;
+  uint32_t x;
+  std::pair<uint32_t, uint32_t> coord;
+  // Параметры курсора
+  HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+  CONSOLE_CURSOR_INFO console{ DWORD(100), false }; // DWORD  dwSize , BOOL   bVisible
+  SetConsoleCursorInfo(hConsole, &console);         // Выкручиваем прозрачность курсора на 100
 
+  // Стираем голову и рисуем горизонтальную вертикальную линию
+  {
+    coord = snake.getHeadSnake(); // Получаем текущие координаты головы.
+    std::tie(y, x) = coord;
+    COORD  position{ static_cast<short>(y),static_cast<short>(x) };
+    SetConsoleCursorPosition(hConsole, position);
+    // Замена головы на линию
+    /*
+    switch()
+    {
+      case
+        break;
+      case
+        break;
+      case
+        break;
+      default:
+       break;
+    }
+    */
+    std::cout << char(lineHORIZONTAL);
+    // Отрисовка головы
+    x++;
+    position.X = static_cast<short>(x);
+    SetConsoleCursorPosition(hConsole, position);
+    std::cout << char(triangleRIGHT);
+    snake.setCoord(std::pair<uint32_t, uint32_t>{x, y});
+  }
 };
