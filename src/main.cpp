@@ -20,12 +20,13 @@ int main()
 	
 	system("cls");
 	Map map;
+
 	while (1)
 	{
-		map.drawApple();
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		//map.drawSnake();
+		//map.drawApple();
 		//std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		map.drawSnake();
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 	
 	//Setup();

@@ -2,12 +2,9 @@
 class Element
 {
 	protected:
-		uint32_t x = 1;
-		uint32_t y = 1;
-		Figure typeElment = triangleUP;
+		uint32_t x,y;
+		Figure typeElment = triangleRIGHT;
 	public:
-		//virtual Figure getType() = 0;
-		//virtual Figure setType() = 0;
 		std::pair<uint32_t, uint32_t> getCoord();
 		Element();
 		~Element();
@@ -15,17 +12,14 @@ class Element
 
 Element::Element (){};
 Element::~Element(){};
-std::pair<uint32_t, uint32_t> Element::getCoord()
-{ 
-  return std::pair<uint32_t, uint32_t>(x,y); 
-};
+std::pair<uint32_t, uint32_t> Element::getCoord(){ return std::pair<uint32_t, uint32_t>(x,y); };
 
 //-------------------------------------------------------------
 
 class Snake : Element
 {
   private:	
-    std::vector<Figure> snake;
+    std::vector<Element> snake;
   public:
 	  Snake();
 	  ~Snake();
@@ -34,7 +28,10 @@ class Snake : Element
 		void setCoord(std::pair<uint32_t, uint32_t>);
 };
 
-Snake::Snake (){ snake = std::move(std::vector<Figure>{triangleUP}); };
+Snake::Snake()
+{
+  snake.push_back();
+};
 Snake::~Snake(){};
 
 //Figure Snake::getType() override{ return Element::typeElment; };

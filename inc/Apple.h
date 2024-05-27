@@ -19,7 +19,11 @@ std::pair<uint32_t, uint32_t> Apple::get()
   //x = Rand::get();
   //y = Rand::get();
   //return RandCoord::get();
-  return std::pair<uint32_t, uint32_t>{RandCoord::get()};
+  std::pair<uint32_t, uint32_t> tmp = RandCoord::get();
+  x = tmp.first;
+  y = tmp.second;
+  return tmp;
+  //return std::pair<uint32_t, uint32_t>{RandCoord::get()};
 };
 
 std::pair<uint32_t, uint32_t> Apple::getApple()
