@@ -20,6 +20,7 @@ class Map : public RandCoord
     ~Map();
     void drawApple();
     void drawSnake();
+    void setSnake(Figure);
 };
 
 //Map::Map  ( preMAP pm ){}
@@ -52,6 +53,11 @@ void Map::frame()
     std::cout << std::endl;
   }
 }
+
+void Map::setSnake(Figure figure)
+{
+  snake.setType(figure);
+};
 
 void Map::drawApple()
 {
@@ -97,20 +103,10 @@ void Map::drawSnake()
     coord = snake.getHeadSnake(); // Получаем текущие координаты головы.
     COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
     SetConsoleCursorPosition(hConsole, position);
+    
     // Замена головы на линию
-    /*
-    switch()
-    {
-      case
-        break;
-      case
-        break;
-      case
-        break;
-      default:
-       break;
-    }
-    */
+    
+    //
     std::cout << char(lineHORIZONTAL);
     // Отрисовка головы
     coord.first++;
