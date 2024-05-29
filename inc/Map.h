@@ -8,19 +8,20 @@
 class Map : public RandCoord
 {
   private:
-    Apple apple;
-    Snake snake;
     uint32_t height = 20;                        // Высота
     uint32_t width  = 60;                        // Ширина
     std::vector<std::vector<unsigned char>> map; // Карта
     void frame();
   public:
     //Map(preMAP);
+    
+    Apple apple;
+    Snake snake;
+    
     Map();
     ~Map();
     void drawApple();
     void drawSnake();
-    void setSnake(Figure);
 };
 
 //Map::Map  ( preMAP pm ){}
@@ -53,11 +54,6 @@ void Map::frame()
     std::cout << std::endl;
   }
 }
-
-void Map::setSnake(Figure figure)
-{
-  snake.setType(figure);
-};
 
 void Map::drawApple()
 {
@@ -104,15 +100,34 @@ void Map::drawSnake()
     COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
     SetConsoleCursorPosition(hConsole, position);
     
-    // Замена головы на линию
-    
-    //
-    std::cout << char(lineHORIZONTAL);
-    // Отрисовка головы
-    coord.first++;
-    position.X = static_cast<short>(coord.first);
+    // Замена головы на линию // Отрисовка головы   
+    switch (snake.getDirection())
+    {
+      case eAction::UP:
+        std::cout << char(lineVERTICAL);
+        coord.second--;
+        position.Y = static_cast<short>(coord.second);
+        break;
+      case eAction::DOWN:
+        std::cout << char(lineVERTICAL);
+        coord.second++;
+        position.Y = static_cast<short>(coord.second);
+        break;
+      case eAction::LEFT:
+        std::cout << char(lineHORIZONTAL);
+        coord.first--;
+        position.X = static_cast<short>(coord.first);
+        break;
+      case eAction::RIGHT:
+        std::cout << char(lineHORIZONTAL);
+        coord.first++;
+        position.X = static_cast<short>(coord.first);
+        break;
+      default:
+        break;
+    }
     SetConsoleCursorPosition(hConsole, position);
-    std::cout << char(triangleRIGHT);
+    std::cout << char(snake.getType());
     snake.setCoord(coord);
 
     //uint32_t x,y;

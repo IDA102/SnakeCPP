@@ -4,6 +4,7 @@ class Element
 	protected:
 		uint32_t x,y;
 		Figure typeElment;
+		eAction direction;
 	public:
 	  //void setType(Figure);
 		std::pair<uint32_t, uint32_t> getCoord();
@@ -34,8 +35,14 @@ class Snake : Element
 		Snake(uint32_t, uint32_t, Figure);
 	  ~Snake();
 		//Figure getType();
+
 		void setType(Figure);
-		std::pair<uint32_t, uint32_t> getHeadSnake();
+		Figure getType();
+
+		void setDirection(eAction);
+		eAction getDirection();
+		
+		std::pair<uint32_t, uint32_t> getHeadSnake(); // Заменить название
 		void setCoord(std::pair<uint32_t, uint32_t>);
 };
 
@@ -43,7 +50,11 @@ Snake::Snake() : Element(1, 1, triangleRIGHT){};
 Snake::Snake(uint32_t _x, uint32_t _y, Figure _typeElment) : Element(_x, _y, _typeElment){};
 Snake::~Snake(){};
 
-void Snake::setType(Figure figure){	Element::typeElment = figure; };
+void   Snake::setType(Figure figure){	Element::typeElment = figure; };
+Figure Snake::getType()             { return this->typeElment;      };
+
+void    Snake::setDirection(eAction tmp) { direction = tmp; };
+eAction Snake::getDirection()            { return direction;};
 
 std::pair<uint32_t, uint32_t> Snake::getHeadSnake()
 {

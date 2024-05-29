@@ -32,16 +32,20 @@ int main()
 					switch( input() )    // Нажатие вверх, вниз, влево, вправо  
 					{
 					case eAction::UP:    //std::cout << "UP"    << std::endl;
-						map.setSnake(triangleUP);
+					  map.snake.setType(triangleUP);
+            map.snake.setDirection(eAction::UP);
 						break;
 					case eAction::DOWN:  //std::cout << "DOWN"  << std::endl;
-						map.setSnake(triangleDOWN);
+						map.snake.setType(triangleDOWN);
+						map.snake.setDirection(eAction::DOWN);
 						break;
 					case eAction::LEFT:  //std::cout << "LEFT"  << std::endl;
-						map.setSnake(triangleLEFT);
+						map.snake.setType(triangleLEFT);
+						map.snake.setDirection(eAction::LEFT);
 						break;
 					case eAction::RIGHT: //std::cout << "RIGHT" << std::endl;
-						map.setSnake(triangleRIGHT);
+						map.snake.setType(triangleRIGHT);
+						map.snake.setDirection(eAction::RIGHT);
 						break;
 					case eAction::STOP:	 //std::cout << "STOP"  << std::endl;
 						break;
