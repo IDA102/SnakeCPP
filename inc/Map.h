@@ -100,7 +100,43 @@ void Map::drawSnake()
     COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
     SetConsoleCursorPosition(hConsole, position);
     
-    // Замена головы на линию // Отрисовка головы   
+    // Замена головы на угол
+    if (snake.flag)
+    {
+      switch (snake.qq)
+      {
+         case angleBottomRight:
+           std::cout << char(snake.qq);
+           coord.first--;
+           position.X = static_cast<short>(coord.first);
+           snake.flag = false;
+           break;
+         case angleBottomLeft:
+           std::cout << char(snake.qq);
+           coord.first++;
+           position.X = static_cast<short>(coord.first);
+           snake.flag = false;
+           break;
+       //case angleTopLeft:
+         //std::cout << char(snake.qq);
+         //coord.first--;
+         //position.X = static_cast<short>(coord.first);
+         //snake.flag = false;
+         //break;
+         case angleTopRight: // Лево-низ
+           std::cout << char(snake.qq);
+           coord.second++;
+           position.Y = static_cast<short>(coord.second);
+           snake.flag = false;
+           break;
+         default:
+           break;
+      }
+    }
+    
+    SetConsoleCursorPosition(hConsole, position);
+
+    // Замена головы на линию // Отрисовка головы // Продолжение после угла 
     switch (snake.getDirection())
     {
       case eAction::UP:
