@@ -32,24 +32,32 @@ int main()
           switch( input() )    // Нажатие вверх, вниз, влево, вправо  
           {
           case eAction::UP:    //std::cout << "UP"    << std::endl;
-            map.snake.setType(triangleUP);
-            map.snake.setDirection(eAction::UP);
-            map.snake.checkAngleDirection(triangleUP);
+            if ( map.snake.setDirection(eAction::UP) )
+            {
+              map.snake.setType(triangleUP);
+              map.snake.checkAngleDirection(triangleUP);
+            }
             break;
           case eAction::DOWN:  //std::cout << "DOWN"  << std::endl;
-            map.snake.setType(triangleDOWN);
-            map.snake.setDirection(eAction::DOWN);
-            map.snake.checkAngleDirection(triangleDOWN);
+            if ( map.snake.setDirection(eAction::DOWN) )
+            {
+              map.snake.setType(triangleDOWN);
+              map.snake.checkAngleDirection(triangleDOWN);
+            }
             break;
           case eAction::LEFT:  //std::cout << "LEFT"  << std::endl;
-            map.snake.setType(triangleLEFT);
-            map.snake.setDirection(eAction::LEFT);
-            map.snake.checkAngleDirection(triangleLEFT);
+            if ( map.snake.setDirection(eAction::LEFT) )
+            {
+              map.snake.setType(triangleLEFT);
+              map.snake.checkAngleDirection(triangleLEFT);
+            }
             break;
           case eAction::RIGHT: //std::cout << "RIGHT" << std::endl;
-            map.snake.setType(triangleRIGHT);
-            map.snake.setDirection(eAction::RIGHT);
-            map.snake.checkAngleDirection(triangleRIGHT);
+            if ( map.snake.setDirection(eAction::RIGHT) )
+            {
+              map.snake.setType(triangleRIGHT);
+              map.snake.checkAngleDirection(triangleRIGHT);
+            }
             break;
           case eAction::STOP:	 //std::cout << "STOP"  << std::endl;
             break;
@@ -68,7 +76,7 @@ int main()
     //map.drawApple();
     //std::this_thread::sleep_for(std::chrono::milliseconds(500));
     map.drawSnake();
-    std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
   
   //Setup();

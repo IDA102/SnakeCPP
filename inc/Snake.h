@@ -1,11 +1,11 @@
-#include<utility>
+п»ї#include<utility>
 class Element
 {
   protected:
-    uint32_t x,y;        // Координаты головы.
-    Figure   typeElment; // Направление головы, влево, вправо, вверх, вниз.
-    eAction  direction;  // Ориентация головы, вертикальная или горизонтальная.
-    Figure   old = triangleRIGHT;        // Старое значение направления.
+    uint32_t x,y;                        // РљРѕРѕСЂРґРёРЅР°С‚С‹ РіРѕР»РѕРІС‹.
+    Figure   typeElment;                 // РќР°РїСЂР°РІР»РµРЅРёРµ РіРѕР»РѕРІС‹, РІР»РµРІРѕ, РІРїСЂР°РІРѕ, РІРІРµСЂС…, РІРЅРёР·.
+    eAction  direction;                  // РћСЂРёРµРЅС‚Р°С†РёСЏ РіРѕР»РѕРІС‹, РІРµСЂС‚РёРєР°Р»СЊРЅР°СЏ РёР»Рё РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅР°СЏ.
+    Figure   old = triangleRIGHT;        // РЎС‚Р°СЂРѕРµ Р·РЅР°С‡РµРЅРёРµ РЅР°РїСЂР°РІР»РµРЅРёСЏ.
     
   public:
     //void setType(Figure);
@@ -35,7 +35,8 @@ class Snake : Element
     std::vector<Element> snake;
   public:
     bool     flag;
-    Figure   qq;
+    Figure   qq;                        // РќРѕСЂРјР°Р»СЊРЅРѕРµ РёРјСЏ РґР°С‚СЊ // РљР°РєРѕР№ СѓРіРѕР» СЂРёСЃРѕРІР°С‚СЊ
+    uint32_t _x = x,_y = y;             // РљРѕРѕСЂРґРёРЅР°С‚Р° РЅР°РїСЂР°РІР»РµРµРЅРёСЏ РѕС‚ СѓРіР»Р°
     Snake();
     Snake(uint32_t, uint32_t, Figure);
     ~Snake();
@@ -44,12 +45,13 @@ class Snake : Element
     void   setType(Figure);
     Figure getType();
 
-    void    setDirection(eAction);
-    eAction getDirection();
+    uint32_t setDirection(eAction);
+    eAction  getDirection();
 
-    void checkAngleDirection(Figure); // Определяет каой угол ставить в случае изменения направлния движения.
+    void checkAngleDirection(Figure); // РћРїСЂРµРґРµР»СЏРµС‚ РєР°РѕР№ СѓРіРѕР» СЃС‚Р°РІРёС‚СЊ РІ СЃР»СѓС‡Р°Рµ РёР·РјРµРЅРµРЅРёСЏ РЅР°РїСЂР°РІР»РЅРёСЏ РґРІРёР¶РµРЅРёСЏ.
     
-    std::pair<uint32_t, uint32_t> getHeadSnake(); // Заменить название
+    std::pair<uint32_t, uint32_t> getHeadSnake(); // Р—Р°РјРµРЅРёС‚СЊ РЅР°Р·РІР°РЅРёРµ
+    std::pair<uint32_t, uint32_t> getCoordAfterTriangle();
     void setCoord(std::pair<uint32_t, uint32_t>);
 };
 
@@ -57,80 +59,97 @@ Snake::Snake() : Element(1, 1, triangleRIGHT){};
 Snake::Snake(uint32_t _x, uint32_t _y, Figure _typeElment) : Element(_x, _y, _typeElment){};
 Snake::~Snake(){};
 
-void   Snake::setType(Figure figure){	Element::typeElment = figure; };
-Figure Snake::getType()             { return this->typeElment;      };
+void   Snake::setType(Figure figure)     {	Element::typeElment = figure; };
+Figure Snake::getType()                  { return this->typeElment;       };
 
-void    Snake::setDirection(eAction tmp) { direction = tmp; };
-eAction Snake::getDirection()            { return direction;};
+uint32_t Snake::setDirection(eAction tmp)
+{ 
+  if (direction == eAction::UP    && tmp == eAction::DOWN )  return 0;
+  if (direction == eAction::DOWN  && tmp == eAction::UP   )  return 0;
+  if (direction == eAction::LEFT  && tmp == eAction::RIGHT)  return 0;
+  if (direction == eAction::RIGHT && tmp == eAction::LEFT )  return 0;
+  direction = tmp;
+  return 1;
+};
+eAction Snake::getDirection()            { return direction;              };
 
 void Snake::checkAngleDirection(Figure tmp)
 {
-  if (tmp == old)
+  if (tmp == old) { return; }
+  switch (tmp)
   {
-    return;
+    case triangleDOWN:
+      switch (old)
+      {
+        case triangleLEFT:    // в†“в†ђ
+          qq = angleTopLeft;
+          _y = y + 1;
+          break;
+        case triangleRIGHT:   // в†“в†’
+          qq = angleTopRight;
+          _y = y + 1;
+          break;
+        default:
+          break;
+      }
+      break;
+    
+    case triangleRIGHT:
+      switch (old)
+      {
+        case triangleUP:       // в†’в†‘
+          qq = angleTopLeft;
+          _x = x + 1;
+          break;
+        case triangleDOWN:     // в†’в†“
+          qq = angleBottomLeft;
+          _x = x + 1;
+          break;
+        default:
+          break;
+      }
+      break;
+   
+    case triangleLEFT:
+      switch (old)
+      {
+        case triangleUP:       // в†ђв†‘
+          qq = angleTopRight;
+          _x = x - 1;
+          break;
+        case triangleDOWN:     // в†ђв†“
+          qq = angleBottomRight;
+          _x = x - 1;
+          break;
+        default:
+          break;
+      }
+      break;
+
+    case triangleUP:
+      switch (old)
+      {
+        case triangleLEFT:     // в†‘в†ђ
+          qq = angleBottomLeft;
+          _y = y - 1;
+          break;
+        case triangleRIGHT:    // в†‘в†’
+          qq = angleBottomRight;
+          _y = y - 1;
+          break;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
   }
-  //else if (tmp == triangleUP)
-  //{
-    //if (old == triangleLEFT) // left
-    //{
-      //qq = angleBottomRight;
-      //flag = true;
-      //old = tmp;
-    //}
-    //else                     // right
-    //{
-      //qq = angleBottomLeft;
-      //flag = true;
-      //old = tmp;
-    //}
-  //}
-  else if (tmp == triangleDOWN)
-  {
-    if (old == triangleLEFT)
-    {
-      //qq = angleTopLeft;
-      //flag = true;
-      //old = tmp;
-    }
-    else
-    {
-      qq = angleTopRight;
-      flag = true;
-      old = tmp;
-    }
-  }
-  else if (tmp == triangleLEFT)
-  {
-    if (old == triangleUP)    // up
-    {
-      qq = angleTopRight;
-      flag = true;
-      old = tmp;
-    }
-    else                      // down
-    {
-      qq = angleBottomRight;
-      flag = true;
-      old = tmp;
-    }
-  }
-  else if (tmp == triangleRIGHT)
-  {
-    if (old == triangleUP)
-    {
-      //qq = angleTopRight;
-      //flag = true;
-      //old = tmp;
-    }
-    else
-    {
-      qq = angleBottomLeft;
-      flag = true;
-      old = tmp;
-    }
-  }
+  old  = tmp;
+  flag = true;
 };
 
 std::pair<uint32_t, uint32_t> Snake::getHeadSnake(){ return std::pair<uint32_t, uint32_t>{ Element::getCoord() }; };
 
-void Snake::setCoord(std::pair<uint32_t, uint32_t> coord){ Element::x = coord.first; Element::y = coord.second; };
+std::pair<uint32_t, uint32_t> Snake::getCoordAfterTriangle(){ return std::pair<uint32_t, uint32_t>{_x,_y};};
+
+void Snake::setCoord(std::pair<uint32_t, uint32_t> coord){ Element::x = coord.first; Element::y = coord.second; _x = coord.first; _y = coord.second;  };
