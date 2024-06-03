@@ -519,6 +519,11 @@ eSpeed presetSPEED()
 	return ret;
 };
 
+void checkEat()
+{
+  
+};
+
 // Вывод фигур
 /*
 std::cout << char(triangleUP)      << std::endl;

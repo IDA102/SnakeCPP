@@ -56,7 +56,6 @@ class Snake : Element
     void setCoord(std::pair<uint32_t, uint32_t>);
 
     void add();
-    void getTail();
 };
 
 Snake::Snake() : Element(2, 1, triangleRIGHT){ snakeTail.push_back( Element(1, 1, lineVERTICAL) ); };
@@ -75,7 +74,7 @@ uint32_t Snake::setDirection(eAction tmp)
   direction = tmp;
   return 1;
 };
-eAction Snake::getDirection(){ return direction; };
+eAction Snake::getDirection()            { return direction; };
 
 void Snake::checkAngleDirection(Figure tmp)
 {
@@ -170,14 +169,4 @@ void Snake::add()
 
   //}
   //snakeTail.push_back();
-};
-
-void Snake::getTail()
-{
-  auto ib = snakeTail.begin();
-  auto ie = snakeTail.end();
-  while ( ib!=ie )
-  {
-    
-  }
 };

@@ -71,11 +71,11 @@ int main()
       }
     });
 
+  map.drawApple();
   while (1)
   {
-    //map.drawApple();
-    //std::this_thread::sleep_for(std::chrono::milliseconds(500));
     map.drawSnake();
+    map.checkEat();
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
   

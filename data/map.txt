@@ -1,3 +1,6 @@
+// Отрисовывает змейю без контейнера.
+// Голова + неубывающий хвост 
+
 #pragma once
 //#include "Figure.h"
 #include "Apple.h"
@@ -100,13 +103,6 @@ void Map::drawSnake()
     COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
     SetConsoleCursorPosition(hConsole, position);
 
-    while (true)
-    {
-
-    }
-
-
-    /*
     // Замена головы на угол
     if (snake.flag)
     { 
@@ -141,7 +137,6 @@ void Map::drawSnake()
           break;
       }
     }
-    */
     // Отрисовка головы
     SetConsoleCursorPosition(hConsole, position);
     std::cout << char(snake.getType());
