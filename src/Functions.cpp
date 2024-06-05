@@ -1,5 +1,5 @@
 #include "../inc/Header.h"
-
+/*
 std::string bufferDraw;
 bool gameOver;
 size_t score;	
@@ -166,7 +166,7 @@ void Logic()
 		++countTail;
 	}
 }
-
+*/
 eAction input()
 {
 	switch(_getwch())
@@ -518,12 +518,12 @@ eSpeed presetSPEED()
 	thAnimationMenu.join();
 	return ret;
 };
-
+/*
 void checkEat()
 {
   
 };
-
+*/
 // Вывод фигур
 /*
 std::cout << char(triangleUP)      << std::endl;

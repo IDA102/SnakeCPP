@@ -1,28 +1,28 @@
 #pragma once
 #include <random>
-#include "../inc/Header.h"
-#include "../inc/Score.h"
-#include "../inc/RandCoord.h"
-#include "../inc/Map.h"
+#include "Header.h"
+#include "Score.h"
+#include "RandCoord.h"
+#include "Map.h"
 
 int main()
 {
   uint32_t ret      = 0;
-  Score    score;
+  //Score    score;
   bool     flagEXIT = false;
   eAction  eACT     = eAction::EMPTY;
-
-  ret = menu();
-  if     ( ret == 1 ){ system("cls"); presetMAP();     }
-  else if( ret == 2 ){ system("cls"); /*inputSIZE();*/ }
-  else               {}
   
-  system("cls");
-  presetSPEED();
+  //ret = menu();
+  //if     ( ret == 1 ){ system("cls"); presetMAP();     }
+  //else if( ret == 2 ){ system("cls"); /*inputSIZE();*/ }
+  //else               {}
   
-  system("cls");
-  Map map;
-
+  //system("cls");
+  //presetSPEED();
+  
+  //system("cls");
+  Map map(60,20);
+  
   std::thread thInput([&]()
     {
       while(!flagEXIT)
@@ -74,9 +74,12 @@ int main()
   map.drawApple();
   while (1)
   {
+    map.snake.step();
     map.drawSnake();
     map.checkEat();
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(700));
   }
   
   //Setup();
@@ -89,8 +92,8 @@ int main()
   //}
 
   // Запись рекорда в файл
-  if( score.compare() )
-    score.write();
+  //if( score.compare() )
+    //score.write();
   
   thInput.join();
   return 0;

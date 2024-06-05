@@ -1,5 +1,6 @@
 #include <random>
 #include <ctime>
+
 // Отработать ошибку в ядре рандома.
 class RandCoord
 {
@@ -18,10 +19,11 @@ RandCoord::RandCoord(size_t width, size_t height)
 {
 	generator_y.seed(std::time(nullptr));                // Ядро рандома // Может вернуть -1
 	generator_x.seed(std::time(nullptr)+1);              // Ядро рандома // Может вернуть -1
-	std::uniform_int<size_t>::param_type h(1, height); // Диапазон распределения высоты
-	std::uniform_int<size_t>::param_type w(1, width ); // Диапазон распределения ширины
+	std::uniform_int<size_t>::param_type h(1, height);   // Диапазон распределения высоты
+	std::uniform_int<size_t>::param_type w(1, width );   // Диапазон распределения ширины
 	distribution_height.param(h);
 	distribution_width.param(w);
+	
 	//distribution_height.reset();
 	//distribution_width.reset();
 };

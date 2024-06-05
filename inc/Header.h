@@ -13,6 +13,7 @@
 #include <thread>
 //#include <consoleapi2.h>
 #include <Windows.h>
+#include <list>
 //#include "./Score.h"
 
 
@@ -32,6 +33,6 @@ uint32_t menu();        // Меню
 preMAP   presetMAP();   // Пресеты размеров карты
 eSpeed   presetSPEED(); // Пресеты скоростей
 
-void Setup();
-void Draw();
-void Logic();
+//void Setup();
+//void Draw();
+//void Logic();

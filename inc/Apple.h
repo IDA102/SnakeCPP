@@ -1,5 +1,6 @@
 #include<tuple>
 // Заменить кортеж яблока на пару.
+
 class Apple : public RandCoord
 {
   private:

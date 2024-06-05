@@ -12,6 +12,7 @@ class Element
     //void setType(Figure);
 
     std::pair<uint32_t, uint32_t> getCoord();
+    Figure getType();
     Element(uint32_t, uint32_t, Figure);
     ~Element();
 };
@@ -25,6 +26,8 @@ Element::Element(uint32_t _x, uint32_t _y, Figure _typeElment)
   typeElment = _typeElment;
 };
 
+Figure Element::getType(){ return typeElment; };
+
 Element::~Element(){};
 std::pair<uint32_t, uint32_t> Element::getCoord(){ return std::pair<uint32_t, uint32_t>(x,y); };
 
@@ -33,11 +36,12 @@ std::pair<uint32_t, uint32_t> Element::getCoord(){ return std::pair<uint32_t, ui
 class Snake : Element
 {
   private:	
-    std::vector<Element> snakeTail;
+    std::list<Element> snakeTail;
   public:
     bool     flag;
     Figure   qq;                                // Нормальное имя дать // Какой угол рисовать
     uint32_t _x = x,_y = y;                     // Координата направлеения от угла
+    uint32_t xDel, yDel;
     Snake();
     Snake(uint32_t, uint32_t, Figure);
     ~Snake();
@@ -53,13 +57,17 @@ class Snake : Element
     
     std::pair<uint32_t, uint32_t> getHeadSnake(); // Заменить название
     std::pair<uint32_t, uint32_t> getCoordAfterTriangle();
+    std::pair<uint32_t, uint32_t> snakeCoordDel();
+
     void setCoord(std::pair<uint32_t, uint32_t>);
 
     void add();
-    void getTail();
+    auto getTail();
+    void step();
+
 };
 
-Snake::Snake() : Element(2, 1, triangleRIGHT){ snakeTail.push_back( Element(1, 1, lineVERTICAL) ); };
+Snake::Snake() : Element(2, 1, triangleRIGHT){ snakeTail.push_back( Element(1, 1, lineHORIZONTAL) ); };
 Snake::Snake(uint32_t _x, uint32_t _y, Figure _typeElment) : Element(_x, _y, _typeElment){};
 Snake::~Snake(){};
 
@@ -160,24 +168,45 @@ void Snake::setCoord(std::pair<uint32_t, uint32_t> coord){ Element::x = coord.fi
 
 void Snake::add()
 {
-  //auto tmp = getDirection();
-  //if ()
-  //{
-
-  //}
-  //else
-  //{
-
-  //}
-  //snakeTail.push_back();
+  snakeTail.push_front(snakeTail.front());
 };
 
-void Snake::getTail()
+auto Snake::getTail(){ return std::pair<decltype(snakeTail.begin()), decltype(snakeTail.end())>{ snakeTail.begin(), snakeTail.end()}; };
+
+void Snake::step()
 {
-  auto ib = snakeTail.begin();
-  auto ie = snakeTail.end();
-  while ( ib!=ie )
+  auto tmp = snakeTail.back();
+  auto qq = tmp.getCoord();
+  xDel = qq.first;
+  yDel = qq.second;
+  // Замена головы на линию // Продолжение после угла 
+  switch (direction)
   {
-    
+    case eAction::UP:
+      snakeTail.push_front( Element( x,  y, lineVERTICAL)  );
+      y--;
+      break;
+    case eAction::DOWN:
+      snakeTail.push_front( Element(x,   y, lineVERTICAL)  );
+      y++;
+      break;
+    case eAction::LEFT:
+      snakeTail.push_front( Element(x, y  , lineHORIZONTAL));
+      x--;
+      break;
+    case eAction::RIGHT:
+      snakeTail.push_front( Element(x, y  , lineHORIZONTAL));
+      x++;
+      break;
+    default:
+      return;
+      break;
   }
+  snakeTail.pop_back();
+};
+
+std::pair<uint32_t, uint32_t> Snake::snakeCoordDel()
+{
+  //auto tmp = snakeTail.back();
+  return std::pair<uint32_t, uint32_t>(xDel,yDel);
 };

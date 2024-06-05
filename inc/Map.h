@@ -1,5 +1,6 @@
 #pragma once
 //#include "Figure.h"
+
 #include "Apple.h"
 #include "Snake.h"
 #include <Windows.h>
@@ -8,8 +9,8 @@
 class Map : public RandCoord
 {
 private:
-  uint32_t height = 20;                        // Высота
-  uint32_t width  = 60;                        // Ширина
+  uint32_t width;                            // Ширина / 60
+  uint32_t height;                           // Высота / 20
   std::vector<std::vector<unsigned char>> map; // Карта
   void frame();
 public:
@@ -18,7 +19,7 @@ public:
   Apple apple;
   Snake snake;
 
-  Map();
+  Map(uint32_t, uint32_t);
   ~Map();
   void drawApple();
   void drawSnake();
@@ -26,14 +27,17 @@ public:
 };
 
 //Map::Map  ( preMAP pm ){}
-Map::Map() : RandCoord(width, height), apple(width, height)
+Map::Map(uint32_t _width, uint32_t _height) : RandCoord(_width, _height), apple(_width, _height)
 {
+  width  = _width;
+  height = _height;
   // Резервируем место под карту. // Ленивую инициализацию для map-хз как
   map = std::move(std::vector<std::vector<unsigned char>>{height + 2, std::vector<unsigned char>(width + 2, ' ')});
   apple = std::move(Apple(width, height));
   this->frame();
 };
 Map::~Map() {}
+
 void Map::frame()
 {
   // Углы рамки
@@ -96,56 +100,82 @@ void Map::drawSnake()
 
   // Стираем голову и рисуем горизонтальную вертикальную линию
   {
+    // Стираем последний элемент хвоста
+    {
+      std::pair<uint32_t, uint32_t> coordDel = snake.snakeCoordDel();  // Получаем координаты для затирания кончика хвоста, которые есть только на экране.
+      COORD  position{ static_cast<short>(coordDel.first),static_cast<short>(coordDel.second) };
+      SetConsoleCursorPosition(hConsole, position);
+      std::cout << ' ';
+    }
+
+    // Рисуем первый и последний элемент хвоста
+    {
+      auto tail = snake.getTail();
+      auto tmp = *(tail.first);
+      std::pair<uint32_t, uint32_t> coord(  tmp.getCoord());
+      COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
+      SetConsoleCursorPosition(hConsole, position);
+      std::cout << char(tmp.getType());
+      tmp = *(--tail.second);
+      coord = tmp.getCoord();
+      position.X = static_cast<short>(coord.first);
+      position.Y = static_cast<short>(coord.second);
+      SetConsoleCursorPosition(hConsole, position);
+      std::cout << char(tmp.getType());
+    
+    }
+    // Отрисовка всего хвоста
+    //while (ib != ie)
+    //{
+    //  auto tmp = *ib;
+    //  std::pair<uint32_t, uint32_t> coord(tmp.getCoord());
+    //  COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
+    //  SetConsoleCursorPosition(hConsole, position);
+    //  std::cout << char(tmp.getType());
+    //  ib++;
+    //}
+
+    // Замена головы на угол
+    //if (snake.flag)
+    //{ 
+      //std::cout << char(snake.qq);
+      //coord      = snake.getCoordAfterTriangle();                // Координаты после угла.
+      //position.X = coord.first;
+      //position.Y = coord.second;
+      //snake.flag = false;
+    //}
+    //else
+    //{
+    //  // Замена головы на линию // Продолжение после угла 
+    //  switch (snake.getDirection())
+    //  {
+    //    case eAction::UP:
+    //      std::cout << char(lineVERTICAL);
+    //      position.Y = static_cast<short>(--coord.second);
+    //      break;
+    //    case eAction::DOWN:
+    //      std::cout << char(lineVERTICAL);
+    //      position.Y = static_cast<short>(++coord.second);
+    //      break;
+    //    case eAction::LEFT:
+    //      std::cout << char(lineHORIZONTAL);
+    //      position.X = static_cast<short>(--coord.first);
+    //      break;
+    //    case eAction::RIGHT:
+    //      std::cout << char(lineHORIZONTAL);
+    //      position.X = static_cast<short>(++coord.first);
+    //      break;
+    //    default:
+    //      break;
+    //  }
+    //}
+
+    // Отрисовка головы
     std::pair<uint32_t, uint32_t> coord = snake.getHeadSnake();  // Получаем текущие координаты головы.
     COORD  position{ static_cast<short>(coord.first),static_cast<short>(coord.second) };
-    SetConsoleCursorPosition(hConsole, position);
-
-    while (true)
-    {
-
-    }
-
-
-    /*
-    // Замена головы на угол
-    if (snake.flag)
-    { 
-      std::cout << char(snake.qq);
-      coord      = snake.getCoordAfterTriangle();                // Координаты после угла.
-      position.X = coord.first;
-      position.Y = coord.second;
-      snake.flag = false;
-    }
-    else
-    {
-      // Замена головы на линию // Продолжение после угла 
-      switch (snake.getDirection())
-      {
-        case eAction::UP:
-          std::cout << char(lineVERTICAL);
-          position.Y = static_cast<short>(--coord.second);
-          break;
-        case eAction::DOWN:
-          std::cout << char(lineVERTICAL);
-          position.Y = static_cast<short>(++coord.second);
-          break;
-        case eAction::LEFT:
-          std::cout << char(lineHORIZONTAL);
-          position.X = static_cast<short>(--coord.first);
-          break;
-        case eAction::RIGHT:
-          std::cout << char(lineHORIZONTAL);
-          position.X = static_cast<short>(++coord.first);
-          break;
-        default:
-          break;
-      }
-    }
-    */
-    // Отрисовка головы
+    //SetConsoleCursorPosition(hConsole, position);
     SetConsoleCursorPosition(hConsole, position);
     std::cout << char(snake.getType());
-    snake.setCoord(coord);
   }
 };
 
@@ -155,7 +185,8 @@ void Map::checkEat()
   std::pair<uint32_t, uint32_t> appleCoord = apple.getApple();
   if (snakeCoord.first == appleCoord.first && snakeCoord.second == appleCoord.second)
   {
+    snake.add();
+
     this->drawApple();
-    //snake.add();
   }
 };
