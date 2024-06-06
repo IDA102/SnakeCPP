@@ -21,7 +21,7 @@ int main()
   //presetSPEED();
   
   //system("cls");
-  Map map(60,20);
+  Map map(10,1);
   
   std::thread thInput([&]()
     {
@@ -77,8 +77,9 @@ int main()
     map.snake.step();
     map.drawSnake();
     map.checkEat();
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(50));
     //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(350));
     //std::this_thread::sleep_for(std::chrono::milliseconds(700));
   }
   

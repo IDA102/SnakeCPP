@@ -80,11 +80,59 @@ void Map::drawApple()
   }
 
   // Новые координаты тыблока
-  coord = apple.get(); // Получаем координаты нового тыблока.
-  x = coord.first;
-  y = coord.second;
-  // Записываем координаты тыблока в фрейм карты.
+  //coord = apple.get(); // Получаем координаты нового тыблока.
+  //x = coord.first;
+  //y = coord.second;
+  
+  // Проверяем,что новые координаты яблока не пересекаются с змейкой
+  auto coordHead = snake.getHeadSnake();
+  auto teil      = snake.getTail();
+  auto iTb       = teil.first;
+  auto iTe       = teil.second;
+  bool flag      = true;
 
+  while (flag)
+  {
+    flag = false;
+    coord = apple.get();
+    x = coord.first;
+    y = coord.second;
+    iTb = teil.first;
+    while (iTb != iTe)
+    {
+      auto tmp = (*iTb).getCoord();
+      if ((tmp.first == coord.first && tmp.second == coord.second) || (coord.first == coordHead.first && coord.second == coordHead.second))
+      {
+        flag = true;
+      }
+      iTb++;
+    }
+  }
+
+  //while (flag)
+  //{
+  //  do
+  //  {
+  //    coord = apple.get();
+  //  } while( coord.first == coordHead.first && coord.second == coordHead.second );
+
+
+  //  while (flag)
+  //  {
+  //    flag = false;
+  //    iTb  = teil.first;
+  //    while (iTb != iTe)
+  //    {
+  //      auto tmp = (*iTb).getCoord();
+  //      if (tmp.first == coord.first && tmp.second == coord.second)
+  //      {
+  //        coord = apple.get();
+  //        flag = true;
+  //      }
+  //      iTb++;
+  //    }
+  //  }
+  //}
   // Отрисовываем.
   COORD  position{ static_cast<short>(x),static_cast<short>(y) };
   SetConsoleCursorPosition(hConsole, position);
@@ -186,7 +234,6 @@ void Map::checkEat()
   if (snakeCoord.first == appleCoord.first && snakeCoord.second == appleCoord.second)
   {
     snake.add();
-
     this->drawApple();
   }
 };

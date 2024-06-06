@@ -12,7 +12,7 @@ class Element
     //void setType(Figure);
 
     std::pair<uint32_t, uint32_t> getCoord();
-    Figure getType();
+    Figure getType() const;
     Element(uint32_t, uint32_t, Figure);
     ~Element();
 };
@@ -26,7 +26,7 @@ Element::Element(uint32_t _x, uint32_t _y, Figure _typeElment)
   typeElment = _typeElment;
 };
 
-Figure Element::getType(){ return typeElment; };
+Figure Element::getType() const { return typeElment; };
 
 Element::~Element(){};
 std::pair<uint32_t, uint32_t> Element::getCoord(){ return std::pair<uint32_t, uint32_t>(x,y); };
@@ -48,10 +48,10 @@ class Snake : Element
     //Figure getType();
 
     void     setType(Figure);
-    Figure   getType();
+    Figure   getType() const;
 
     uint32_t setDirection(eAction);
-    eAction  getDirection();
+    eAction  getDirection()const;
 
     void checkAngleDirection(Figure);             // Определяет каой угол ставить в случае изменения направлния движения.
     
@@ -72,7 +72,7 @@ Snake::Snake(uint32_t _x, uint32_t _y, Figure _typeElment) : Element(_x, _y, _ty
 Snake::~Snake(){};
 
 void   Snake::setType(Figure figure)     { Element::typeElment = figure; };
-Figure Snake::getType()                  { return this->typeElment;      };
+Figure Snake::getType() const            { return this->typeElment;      };
 
 uint32_t Snake::setDirection(eAction tmp)
 { 
@@ -83,7 +83,7 @@ uint32_t Snake::setDirection(eAction tmp)
   direction = tmp;
   return 1;
 };
-eAction Snake::getDirection(){ return direction; };
+eAction Snake::getDirection() const { return direction; };
 
 void Snake::checkAngleDirection(Figure tmp)
 {
@@ -179,34 +179,62 @@ void Snake::step()
   auto qq = tmp.getCoord();
   xDel = qq.first;
   yDel = qq.second;
-  // Замена головы на линию // Продолжение после угла 
+
+  // Замена головы на линию // Замена головы на угол
   switch (direction)
   {
-    case eAction::UP:
-      snakeTail.push_front( Element( x,  y, lineVERTICAL)  );
-      y--;
+    case eAction::UP:    snakeTail.push_front(Element(x, y--, (flag) ? this->qq : lineVERTICAL));//y--;
       break;
-    case eAction::DOWN:
-      snakeTail.push_front( Element(x,   y, lineVERTICAL)  );
-      y++;
+    case eAction::DOWN:  snakeTail.push_front(Element(x, y++, (flag) ? this->qq : lineVERTICAL));//y++;
       break;
-    case eAction::LEFT:
-      snakeTail.push_front( Element(x, y  , lineHORIZONTAL));
-      x--;
+    case eAction::LEFT:  snakeTail.push_front(Element(x--, y, (flag) ? this->qq : lineHORIZONTAL));//x--;
       break;
-    case eAction::RIGHT:
-      snakeTail.push_front( Element(x, y  , lineHORIZONTAL));
-      x++;
+    case eAction::RIGHT: snakeTail.push_front(Element(x++, y, (flag) ? this->qq : lineHORIZONTAL));//x++;
       break;
     default:
       return;
       break;
   }
+  flag = false;
   snakeTail.pop_back();
+
+  bool cc = true;
+  while (cc)
+  {
+    auto ib = snakeTail.begin();
+    auto ie = snakeTail.end();
+    while (ib != ie)
+    {
+      auto coord = (*ib).getCoord();
+      if ( (coord.first == x && coord.second == y) || ( x > 10 || y > 1) || (x < 1 || y < 1) )
+      {
+        std::cout << "END"; 
+      }
+      ib++;
+    }
+    cc = false;
+  }
 };
 
-std::pair<uint32_t, uint32_t> Snake::snakeCoordDel()
-{
-  //auto tmp = snakeTail.back();
-  return std::pair<uint32_t, uint32_t>(xDel,yDel);
-};
+std::pair<uint32_t, uint32_t> Snake::snakeCoordDel(){ return std::pair<uint32_t, uint32_t>(xDel,yDel); };
+
+
+// Замена головы на линию // Продолжение после угла 
+//switch (direction)
+//{
+//  case eAction::UP:
+//    snakeTail.push_front( Element( x,  y--, lineVERTICAL)  );//y--;
+//    break;
+//  case eAction::DOWN:
+//    snakeTail.push_front( Element(x,   y++, lineVERTICAL)  );//y++;
+//    break;
+//  case eAction::LEFT:
+//    snakeTail.push_front( Element(x--, y  , lineHORIZONTAL));//x--;
+//    break;
+//  case eAction::RIGHT:
+//    snakeTail.push_front( Element(x++, y  , lineHORIZONTAL));//x++;
+//    break;
+//  default:
+//    return;
+//    break;
+//}
